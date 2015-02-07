@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203015918) do
+ActiveRecord::Schema.define(version: 20150205012153) do
 
   create_table "frequencies", force: true do |t|
     t.string   "value"
@@ -33,6 +33,13 @@ ActiveRecord::Schema.define(version: 20150203015918) do
   end
 
   add_index "medications", ["name"], name: "index_medications_on_name", unique: true
+
+  create_table "sessions", force: true do |t|
+    t.integer  "user_id"
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "treatments", force: true do |t|
     t.date     "start"

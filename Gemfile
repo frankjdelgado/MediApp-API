@@ -32,6 +32,8 @@ gem 'bcrypt', '~> 3.1.7'
 # Pagination
 gem 'kaminari'
 
+gem 'apipie-rails'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
