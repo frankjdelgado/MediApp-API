@@ -4,21 +4,21 @@ module Api
 			
 			respond_to :json
 
-			api :GET, "/users/:id", "Show user profile"
+			api :GET, "/users/:id", "Shows the user profile"
 			error :code => 401, :desc => "Unauthorized"
-			error :code => 404, :desc => "Not Found", :meta => {:anything => "you can think of"}
-			param :session, String, :desc => "user is logged in", :required => true
-			param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
-			param :array_param, [100, "one", "two", 1, 2], :desc => "array validator"
-			param :boolean_param, [true, false], :desc => "array validator with boolean"
-			param :proc_param, lambda { |val|
-			  val == "param value" ? true : "The only good value is 'param value'."
-			}, :desc => "proc validator"
-			param :param_with_metadata, String, :desc => "", :meta => [:your, :custom, :metadata]
-			description "method description"
-			formats ['json', 'jsonp', 'xml']
-			meta :message => "Some very important info"
-			example " 'user': {...} "
+			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
+			param :email, String, :desc => "Users mail", :required => true
+			# param :regexp_param, /^[0-9]* years/, :desc => "regexp param"
+			# param :array_param, [100, "one", "two", 1, 2], :desc => "array validator"
+			# param :boolean_param, [true, false], :desc => "array validator with boolean"
+			# param :proc_param, lambda { |val|
+			#   val == "param value" ? true : "The only good value is 'param value'."
+			# }, :desc => "proc validator"
+			# param :param_with_metadata, String, :desc => "", :meta => [:your, :custom, :metadata]
+			description "user id on Url + email on params retrieves the users info"
+			formats ['json']
+			meta :message => "User must be logged in to access his info."
+			example " 'name':'mela','email':'mail@gmail.com','role':1,'created_at':'2015-02-07T21:58:02.643Z','updated_at':'2015-02-07T21:58:02.643Z ' "
 			def show
 				
 				user = User.find_by_email(params[:email])
@@ -78,43 +78,7 @@ module Api
 				params.permit(:email, :name, :password, :password_confirmation)
 			end
 
-			resource_description do
-			  short 'Site members'
-			  formats ['json']
-			  param :id, Fixnum, :desc => "User ID", :required => false
-			  param :resource_param, Hash, :desc => 'Param description for all methods' do
-			    param :ausername, String, :desc => "Username for login", :required => true
-			    param :apassword, String, :desc => "Password for login", :required => true
-			  end
-			  api_version "development"
-			  error 404, "Missing"
-			  error 500, "Server crashed for some <%= reason %>", :meta => {:anything => "you can think of"}
-			  meta :author => {:name => 'John', :surname => 'Doe'}
-			  description <<-EOS
-			    == Long description
-			     Example resource for rest api documentation
-			     These can now be accessed in <tt>shared/header</tt> with:
-			       Headline: <%= headline %>
-			       First name: <%= person.first_name %>
 
-			     If you need to find out whether a certain local variable has been
-			     assigned a value in a particular render call, you need to use the
-			     following pattern:
-
-			     <% if local_assigns.has_key? :headline %>
-			        Headline: <%= headline %>
-			     <% end %>
-
-			    Testing using <tt>defined? headline</tt> will not work. This is an
-			    implementation restriction.
-
-			    === Template caching
-
-			    By default, Rails will compile each template to a method in order
-			    to render it. When you alter a template, Rails will check the
-			    file's modification time and recompile it in development mode.
-			  EOS
-			end
 		end
 	end
 end
