@@ -4,7 +4,7 @@ module Api
 			
 			respond_to :json
 
-			api :GET, "/users/:id", "Retrieves user data"
+			api :GET, "/v1/users/:id", "Retrieves user data"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
 			param :email, String, :desc => "Users mail", :required => true
@@ -23,7 +23,7 @@ module Api
 				end
 			end
 
-			api :POST, "/users/", "Creates a new user on database"
+			api :POST, "/v1/users/", "Creates a new user on database"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
 			param :name, String, :desc => "Users Name to be used on the App", :required => true
@@ -46,7 +46,7 @@ module Api
 			end
 
 
-			api :PUT, "/users/:id", "Updates a user data on database"
+			api :PUT, "/v1/users/:id", "Updates a user data on database"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
 			param :name, String, :desc => "Users Name to be used on the App", :required => true
@@ -68,7 +68,7 @@ module Api
 				end
 			end
 
-			api :DELETE, "/users/:id", "Destroys  Users record on database"
+			api :DELETE, "/v1/users/:id", "Destroys  Users record on database"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 406, :desc => "Bad Request"
 			param :email, String, :desc => "Users mail", :required => true
