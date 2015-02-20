@@ -29,13 +29,12 @@ module Api
 			param :name, String, :desc => "Users Name to be used on the App", :required => true
 			param :email, String, :desc => "Users mail", :required => true
 			param :password, String, :desc => "Users access password", :required => true
-			param :role, Integer, :desc => "Users role for the app", :required => false
 			description "with proper params retrieves a recently created user info on json format"
 			formats ['json']
 			meta :message => "email must be unique trought the app"
 			example " 'name':'Jane Doe','email':'mail@gmail.com','role':1,'created_at':'2015-02-07T21:58:02.643Z','updated_at':'2015-02-07T21:58:02.643Z ' "
 			def create
-
+        
 				user = User.new(user_params)
 
 			    if user.save
@@ -99,9 +98,8 @@ module Api
 			private
 
 			def user_params
-				params.permit(:email, :name, :password, :password_confirmation)
+        params.permit(:email, :name, :password, :role, :password_confirmation)
 			end
-
 
 		end
 	end
