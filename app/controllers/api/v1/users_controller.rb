@@ -30,7 +30,7 @@ module Api
 				
 				user = current_user
 
-				if user.update(update_params)
+				if user.update(user_params)
 					render status: :ok, json: user.to_json
 				else
 					render status: :bad_request, json: user.errors
