@@ -1,7 +1,7 @@
 class CreateSessions < ActiveRecord::Migration
   def change
     create_table :sessions do |t|
-      t.belongs_to :user
+      t.references :user
       t.string :token
 
       t.timestamps
