@@ -78,12 +78,16 @@ module Api
 			def destroy
 
 				user = User.find_by_email(params[:email])
-
-				if user.destroy
-					render status: :ok, json:"User deleted"
-				else
-					render status: :bad_request, json: user.errors
-				end
+        if not user.blank?
+          if user.destroy
+            render status: :ok, json:"User deleted"
+          else
+            render status: :bad_request, json: user.errors
+          end
+        else
+          render status: :ok, json: "User not found"
+        end
+        
 			end
 
 			def recover_password
