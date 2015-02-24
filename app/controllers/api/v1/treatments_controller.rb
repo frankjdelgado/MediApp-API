@@ -24,9 +24,25 @@ module Api
 
 			def create
 
-				treatment = Treatment.new(treatment_params)
-				treatment.start = params[:treatment][:start].to_date.strftime("%Y-%m-%d")
-				treatment.finish = params[:treatment][:start].to_date.strftime("%Y-%m-%d")
+
+				medication = Medication.find_by_name(params[:medication_name])
+				
+				if medication.blank?
+					medication = Medication.new
+					medication.name(params[:medication_name])
+					if not medication.save
+						render status: 500, json: medication.errors
+						return
+					end
+				end
+
+				treatment = Treatment.new
+				treatment.medication_id = medication.id
+				treatment.start = Date.today
+				treatment.finish = params[:treatment][:finish].to_date.strftime("%Y-%m-%d")
+				treatment.hour = params[:hour]
+				treatment.frequency = params[:frequency]
+				treatment.user_id = current_user.id
 
 				if treatment.save
 					render status: :created, json: treatment.to_json
