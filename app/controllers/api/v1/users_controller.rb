@@ -7,6 +7,7 @@ module Api
 			api :GET, "/v1/users/:id", "Retrieves user data"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
+      param :id, String, :desc => "Users mail", :required => false
 			param :email, String, :desc => "Users mail", :required => true
 			description "user id on Url + email on params retrieves the users info"
 			formats ['json']
@@ -51,6 +52,7 @@ module Api
 			param :name, String, :desc => "Users Name to be used on the App", :required => true
 			param :email, String, :desc => "Users mail", :required => true
 			param :password, String, :desc => "Users access password", :required => true
+      param :password_confirmation, String, :desc => "Users access password", :required => true
 			param :role, Integer, :desc => "Users role for the app", :required => false
 			description "with at least one updated user value, the method retrieves the modified user info on json format"
 			formats ['json']
@@ -58,7 +60,7 @@ module Api
 			example " 'name':'Jane Doe','email':'mail11@gmail.com','role':1,'created_at':'2015-02-07T21:58:02.643Z','updated_at':'2015-02-07T21:58:02.643Z ' "
 			def update
 				
-				user = current_user
+        user = User.find_by_email(params[:email])
 
 				if user.update(user_params)
 					render status: :ok, json: user.to_json
