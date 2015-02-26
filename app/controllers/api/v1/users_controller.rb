@@ -54,14 +54,16 @@ module Api
 			param :password, String, :desc => "Users access password", :required => true
       param :password_confirmation, String, :desc => "Users access password", :required => true
 			param :role, Integer, :desc => "Users role for the app", :required => false
-			description "with at least one updated user value, the method retrieves the modified user info on json format"
+      param :token, String, :desc => "Users session token, as header", :required => false
+      description "with at least one updated user value, and its proper token session header, the method retrieves the modified user info on json format"
 			formats ['json']
 			meta :message => "A User session must be active"
 			example " 'name':'Jane Doe','email':'mail11@gmail.com','role':1,'created_at':'2015-02-07T21:58:02.643Z','updated_at':'2015-02-07T21:58:02.643Z ' "
 			def update
 				
-        user = User.find_by_email(params[:email])
-
+        #user = User.find_by_email(params[:email])
+        user = current_user
+        
 				if user.update(user_params)
 					render status: :ok, json: user.to_json
 				else

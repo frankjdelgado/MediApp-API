@@ -3,7 +3,16 @@ module Api
 		class SessionsController < ApplicationController
 
 			respond_to :json
-
+      
+      api :POST, "/v1/sessions/", "Creates a new session on database"
+			error :code => 401, :desc => "Unauthorized"
+			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
+      param :email, String, :desc => "Users mail, used as header on the request", :required => false
+			param :password, String, :desc => "Users access password, used as header on the request", :required => false
+      description "with proper HEADERS retrieves a recently created session info on json format"
+			formats ['json']
+			meta :message => "email must be unique trought the app"
+			example "{'token':'pYcVa9Upz5bWNektfh/Z6C19hByu3HsgHYQxpwADwvFtM8Uiv1ucz67+t7nKDixGn2ymDKqJSM/a6lQGZdQScA==','user':{'name':'admin','email':'mail@gmail.com','role':0,'created_at':'2015-02-26T04:45:15.874Z','updated_at':'2015-02-26T04:45:15.874Z'}}"
 			# Create session
 			def create
 

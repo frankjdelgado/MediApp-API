@@ -19,10 +19,6 @@ User.create(:name => "frank" , :email => "frank@gmail.com", :password => "123456
 User.create(:name => "luis" , :email => "luis@gmail.com", :password => "123456", :role => 1)
 User.create(:name => "User" , :email => "user@gmail.com", :password => "123456", :role => 2)
 
-9.times do |i|
-  User.create(name: "User #{i}" , email: "mail#{i}@gmail.com", password: "123456", role: 2)
-end
-
 
 # Frequecy
 
@@ -48,14 +44,7 @@ end
 	MedicationType.create(value: "Pill")
 	MedicationType.create(value: "Vitamin")
 
-
-
-9.times do |i|
-	Medication.create(
-					:name => "Liquid X#{i}" ,
-					:description => "You can make #{i+3} powerpuff girls",
-				)
-end
+#Medications
 
 Medication.create(:name => "Vicodion" , :description => "Powerfull painkiller")
 Medication.create(:name => "Acetaminofen" , :description => "Anti-Flu medicine")
