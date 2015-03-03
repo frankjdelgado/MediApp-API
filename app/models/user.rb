@@ -21,6 +21,6 @@ class User < ActiveRecord::Base
 	end
 	
 	def as_json(options = nil)
-		super({ except: [:id, :password_digest] }.merge(options || {}))
+		super({ except: [:password_digest] }.merge(options || {}))
 	end
 end

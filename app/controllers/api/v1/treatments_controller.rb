@@ -38,11 +38,39 @@ module Api
 				end 
 			end
 
+      api :POST, "/v1/treatments/", "Creates a new treatment on database, using the current user"
+			error :code => 401, :desc => "Unauthorized"
+			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
+      param :medication_name, String, :desc => "The name of the medicine we want the treatment to have, ex: 'Vicodin'", :required => true
+      param :finish, String, :desc => "time when the treatment ends, ex:'2015-03-05' ", :required => true
+      param :hour, String, :desc => "time when the medicine should be taken, ex: '20:17'", :required => true
+      param :frequency, String, :desc => "Every how much hour the treatment should be taken, ex: '4' ", :required => true
+      param :token, String, :desc => "token as HEADER, wich identifies the user session", :required => false
+      description "with proper params retrieves a recently created treatment info on json format"
+			formats ['json']
+      meta :message => "name must be unique trought the app, or it will be created if it doesnt exist"
+			example "{'id':45,'start':'2015-03-03','finish':'2015-03-05','hour':' 8:03 PM','frequency':4,'user_id':21,'medication_id':45,'created_at':'2015-03-03T21:19:27.192Z','updated_at':'2015-03-03T21:19:27.192Z','medication':'Acacelcer'}"
 			def create
 
-				treatment = Treatment.new(treatment_params)
-				treatment.start = params[:treatment][:start].to_date.strftime("%Y-%m-%d")
-				treatment.finish = params[:treatment][:start].to_date.strftime("%Y-%m-%d")
+
+				medication = Medication.find_by_name(params[:medication_name])
+				
+				if medication.blank?
+					medication = Medication.new
+					medication.name = params[:medication_name]
+					if not medication.save
+						render status: 500, json: medication.errors
+						return
+					end
+				end
+
+				treatment = Treatment.new
+				treatment.medication_id = medication.id
+				treatment.start = Date.today
+				treatment.finish = params[:finish].to_date.strftime("%Y-%m-%d")
+        treatment.hour = params[:hour].to_time.strftime("%l:%m %p")
+				treatment.frequency = params[:frequency]
+				treatment.user_id = current_user.id
 
 				if treatment.save
 					render status: :created, json: treatment.to_json
@@ -60,6 +88,7 @@ module Api
 					render status: :bad_request, json: treatment.errors
 				end
 			end
+      
       api :GET, "/v1/treatments/take", "Retrieves specified treatment data"
 			error :code => 401, :desc => "Unauthorized"
       error :code => 404, :desc => "Not Found", :meta => {:anything => "No medications exist with that name"}
@@ -78,11 +107,6 @@ module Api
 				end
 			end
 
-			private
-
-			def treatment_params
-				params.permit(:start, :finish, :hour, :frequency_quantity, :frequency_id, :user_id, :medication_id)
-			end
 		end
 	end
 end

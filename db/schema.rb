@@ -13,18 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20150205012153) do
 
-  create_table "frequencies", force: true do |t|
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "medication_types", force: true do |t|
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "medications", force: true do |t|
     t.string   "name",        null: false
     t.text     "description"
@@ -45,29 +33,15 @@ ActiveRecord::Schema.define(version: 20150205012153) do
     t.date     "start"
     t.date     "finish"
     t.string   "hour"
-    t.integer  "frequency_quantity"
-    t.integer  "frequency_id"
+    t.integer  "frequency"
     t.integer  "user_id"
     t.integer  "medication_id"
-    t.integer  "unit_id"
-    t.integer  "medication_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "treatments", ["frequency_id"], name: "index_treatments_on_frequency_id"
   add_index "treatments", ["medication_id"], name: "index_treatments_on_medication_id"
-  add_index "treatments", ["medication_type_id"], name: "index_treatments_on_medication_type_id"
-  add_index "treatments", ["unit_id"], name: "index_treatments_on_unit_id"
   add_index "treatments", ["user_id"], name: "index_treatments_on_user_id"
-
-  create_table "units", force: true do |t|
-    t.string   "value",      null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "units", ["value"], name: "index_units_on_value", unique: true
 
   create_table "users", force: true do |t|
     t.string   "name",                        null: false
