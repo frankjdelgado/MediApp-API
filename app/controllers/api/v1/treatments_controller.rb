@@ -29,7 +29,7 @@ module Api
 				
 				if medication.blank?
 					medication = Medication.new
-					medication.name(params[:medication_name])
+					medication.name = params[:medication_name]
 					if not medication.save
 						render status: 500, json: medication.errors
 						return
@@ -39,7 +39,7 @@ module Api
 				treatment = Treatment.new
 				treatment.medication_id = medication.id
 				treatment.start = Date.today
-				treatment.finish = params[:treatment][:finish].to_date.strftime("%Y-%m-%d")
+				treatment.finish = params[:finish].to_date.strftime("%Y-%m-%d")
 				treatment.hour = params[:hour]
 				treatment.frequency = params[:frequency]
 				treatment.user_id = current_user.id
@@ -71,11 +71,6 @@ module Api
 				end
 			end
 
-			private
-
-			def treatment_params
-				params.permit(:start, :finish, :hour, :frequency_quantity, :frequency_id, :user_id, :medication_id)
-			end
 		end
 	end
 end
