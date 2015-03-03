@@ -34,6 +34,7 @@ gem 'kaminari'
 
 gem 'apipie-rails'
 
+gem 'rack-cors', :require => 'rack/cors'
 # Use unicorn as the app server
 # gem 'unicorn'
 
