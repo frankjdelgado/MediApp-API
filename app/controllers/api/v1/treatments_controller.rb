@@ -40,7 +40,7 @@ module Api
 				treatment.medication_id = medication.id
 				treatment.start = Date.today
 				treatment.finish = params[:finish].to_date.strftime("%Y-%m-%d")
-				treatment.hour = params[:hour]
+				treatment.hour = params[:hour].to_date.to_time.strftime("%l:%m %p")
 				treatment.frequency = params[:frequency]
 				treatment.user_id = current_user.id
 
