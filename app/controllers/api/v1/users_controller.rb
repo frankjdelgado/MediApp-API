@@ -37,15 +37,15 @@ module Api
         
 				user = User.new(user_params)
 
-			    if user.save
-			    	render status: :created, json: user.to_json
-			    else
-			    	render status: :bad_request, json: user.errors
-			    end
+		    if user.save
+		    	render status: :created, json: user.to_json
+		    else
+		    	render status: :bad_request, json: user.errors
+		    end
 			end
 
 
-			api :PUT, "/v1/users", "Updates a user data on database"
+			api :PATCH, "/v1/update_profile", "Updates a user data on database"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
 			param :name, String, :desc => "Users Name to be used on the App", :required => false
@@ -55,7 +55,7 @@ module Api
 			formats ['json']
 			meta :message => "A User session must be active"
 			example " 'name':'Jane Doe','email':'mail11@gmail.com','role':1,'created_at':'2015-02-07T21:58:02.643Z','updated_at':'2015-02-07T21:58:02.643Z ' "
-			def update
+			def update_profile
 				
 				user = current_user
 				user.name = params[:name] if params[:name]
@@ -93,7 +93,7 @@ module Api
 			end
 
 			def recover_password
-				user = current_user
+				user = User.find_by_email(params[:email])
 				new_password = SecureRandom.base64(6)
 				user.password =  new_password
 				if user.save
