@@ -13,17 +13,16 @@ module Api
 
 			    if user && user.authenticate(request.headers["password"])
 			      
-			      	# Delete session token if exists
-					user.session.delete if user.session
+			      	session = user.session
 
-					# Create new session
-					session = Session.new(token: generate_token)
-					session.user = user
+					if not session.blank?
+						session.token = generate_token
+					else
+						session = Session.new(token: generate_token, user_id: user.id)
+					end
 
 					if session.save
-						response["token"] = session.token
-						response["user"] = user
-						render status: :created, json: response
+						render status: :created, json: session.to_json
 						return
 					else
 						render status: :internal_server_error, json: session.errors

@@ -45,13 +45,12 @@ module Api
 			end
 
 
-			api :PUT, "/v1/users/:id", "Updates a user data on database"
+			api :PUT, "/v1/users", "Updates a user data on database"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
-			param :name, String, :desc => "Users Name to be used on the App", :required => true
-			param :email, String, :desc => "Users mail", :required => true
+			param :name, String, :desc => "Users Name to be used on the App", :required => false
+			param :email, String, :desc => "Users mail", :required => false
 			param :password, String, :desc => "Users access password", :required => true
-			param :role, Integer, :desc => "Users role for the app", :required => false
 			description "with at least one updated user value, the method retrieves the modified user info on json format"
 			formats ['json']
 			meta :message => "A User session must be active"
@@ -59,8 +58,11 @@ module Api
 			def update
 				
 				user = current_user
-
-				if user.update(user_params)
+				user.name = params[:name] if params[:name]
+				user.email = params[:email] if params[:email]
+				user.password = params[:password] if params[:password]
+				
+				if user.save
 					render status: :ok, json: user.to_json
 				else
 					render status: :bad_request, json: user.errors
