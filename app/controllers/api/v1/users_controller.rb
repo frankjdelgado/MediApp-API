@@ -46,7 +46,7 @@ module Api
 			end
 
 
-			api :PATCH, "/v1/update_profile", "Updates a user data on database"
+      api :POST, "/v1/users/update_profile", "Updates a user data on database"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
 			param :name, String, :desc => "Users Name to be used on the App", :required => true
