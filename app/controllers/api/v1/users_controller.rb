@@ -100,6 +100,7 @@ module Api
 				user.password =  new_password
 				if user.save
 					Medimailer.recover_account_email(user, new_password).deliver
+          render status: :ok, json:"mail sent"
 				end
 			end
 

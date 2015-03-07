@@ -37,6 +37,8 @@ gem 'apipie-rails'
 gem 'rack-cors', :require => 'rack/cors'
 
 gem 'dotenv-rails', :groups => [:development, :test]
+
+gem 'mail'
 # Use unicorn as the app server
 # gem 'unicorn'
 
