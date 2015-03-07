@@ -6,6 +6,7 @@ Rails.application.routes.draw do
         resources :users, except: [:index, :new] do
           collection do
             get 'recover_password'
+            post 'update_profile'
           end 
         end
         resources :sessions, only: [:create]
