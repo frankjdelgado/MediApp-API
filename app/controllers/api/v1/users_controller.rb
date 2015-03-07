@@ -94,6 +94,13 @@ module Api
         
 			end
 
+      api :GET, "/v1/users/recover_password", "sends a recover password mail to the user"
+			error :code => 401, :desc => "Unauthorized"
+			error :code => 404, :desc => "Not Found"
+			param :email, String, :desc => "Users mail", :required => true
+      description "Sends to the respective email a mail with the user new generated password"
+			formats ['json']
+      example " anwer: mail sent "
 			def recover_password
 				user = User.find_by_email(params[:email])
 				new_password = SecureRandom.base64(6)
