@@ -30,7 +30,7 @@ module Api
 				if medication.blank?
 					medication = Medication.new
 					medication.name = params[:medication_name]
-					if not medication.save
+					if not medication.save!
 						render status: 500, json: medication.errors
 						return
 					end
