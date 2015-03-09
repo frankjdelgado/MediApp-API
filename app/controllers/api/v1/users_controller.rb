@@ -38,33 +38,35 @@ module Api
         
 				user = User.new(user_params)
 
-			    if user.save
-			    	render status: :created, json: user.to_json
-			    else
-			    	render status: :bad_request, json: user.errors
-			    end
+		    if user.save
+		    	render status: :created, json: user.to_json
+		    else
+		    	render status: :bad_request, json: user.errors
+		    end
 			end
+
 
 
       api :POST, "/v1/users/update_profile", "Updates a user data on database"
 			error :code => 401, :desc => "Unauthorized"
 			error :code => 404, :desc => "Not Found", :meta => {:anything => "could generate this error"}
-			param :name, String, :desc => "Users Name to be used on the App", :required => true
-			param :email, String, :desc => "Users mail", :required => true
+			param :name, String, :desc => "Users Name to be used on the App", :required => false
+			param :email, String, :desc => "Users mail", :required => false
 			param :password, String, :desc => "Users access password", :required => true
-      param :password_confirmation, String, :desc => "Users access password", :required => true
-			param :role, Integer, :desc => "Users role for the app", :required => false
-      param :token, String, :desc => "Users session token, as header", :required => false
-      description "with at least one updated user value, and its proper token session header, the method retrieves the modified user info on json format"
+			description "with at least one updated user value, the method retrieves the modified user info on json format"
+
 			formats ['json']
 			meta :message => "A User session must be active"
 			example " 'name':'Jane Doe','email':'mail11@gmail.com','role':1,'created_at':'2015-02-07T21:58:02.643Z','updated_at':'2015-02-07T21:58:02.643Z ' "
 			def update_profile
 				
-        #user = User.find_by_email(params[:email])
-        user = current_user
-        
-				if user.update(user_params)
+				user = current_user
+				user.name = params[:name] if params[:name]
+				user.email = params[:email] if params[:email]
+				user.password = params[:password] if params[:password]
+
+				if user.save
+
 					render status: :ok, json: user.to_json
 				else
 					render status: :bad_request, json: user.errors

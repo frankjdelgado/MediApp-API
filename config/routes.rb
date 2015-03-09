@@ -13,6 +13,7 @@ Rails.application.routes.draw do
          resources :treatments, except: [:new, :show] do
           collection do
             get 'take'
+            delete 'treatment_delete'
           end 
         end
       resources :medications, except: [:edit, :new] do

@@ -1,8 +1,6 @@
 class Treatment < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :medication
-	belongs_to :medication_type
-	belongs_to :unit
 
 	validates :user_id, presence: true
 	validates :medication_id, presence: true

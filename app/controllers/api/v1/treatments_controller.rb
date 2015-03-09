@@ -58,7 +58,7 @@ module Api
 				if medication.blank?
 					medication = Medication.new
 					medication.name = params[:medication_name]
-					if not medication.save
+					if not medication.save!
 						render status: 500, json: medication.errors
 						return
 					end
@@ -68,7 +68,7 @@ module Api
 				treatment.medication_id = medication.id
 				treatment.start = Date.today
 				treatment.finish = params[:finish].to_date.strftime("%Y-%m-%d")
-        treatment.hour = params[:hour].to_time.strftime("%l:%m %p")
+				treatment.hour = params[:hour]
 				treatment.frequency = params[:frequency]
 				treatment.user_id = current_user.id
 
@@ -83,7 +83,22 @@ module Api
 				treatment = Treatment.find(params[:id])
 
 				if treatment.destroy
-					render status: :ok, json:"Treatment Deleted."
+					render status: :ok, json: treatment.to_json
+				else
+					render status: :bad_request, json: treatment.errors
+				end
+			end
+
+			def treatment_delete
+
+				id = Medication.where(name: params[:medication_name]).take.id
+				treatment = Treatment.where(medication_id: id)
+															.where(finish: params[:finish].to_date.strftime("%Y-%m-%d"))
+															.where(hour: params[:hour])
+															.where(frequency: params[:frequency]).take
+
+				if treatment.destroy
+					render status: :ok, json: treatment.to_json
 				else
 					render status: :bad_request, json: treatment.errors
 				end

@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20150205012153) do
     t.date     "finish"
     t.string   "hour"
     t.integer  "frequency"
+    t.integer  "deleted",       default: 0
     t.integer  "user_id"
     t.integer  "medication_id"
     t.datetime "created_at"

@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 		return new_token
 	end
 
-	def current_user
+    def current_user
         Session.find_by_token(request.headers["token"]).user
     end
 
