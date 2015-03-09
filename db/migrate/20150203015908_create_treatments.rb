@@ -5,6 +5,7 @@ class CreateTreatments < ActiveRecord::Migration
       t.date :finish
       t.string :hour
       t.integer :frequency
+      t.integer :deleted, default: 0
       t.references :user, index: true
       t.references :medication, index: true
 
