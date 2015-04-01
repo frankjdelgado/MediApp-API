@@ -15,7 +15,7 @@ class Treatment < ActiveRecord::Base
 
 	def as_json(options = nil)
 		hash_info = super({}.merge(options || {}))
-		hash_info[:medication] = medication.name
+		hash_info[:name] = medication.name
 		hash_info
 	end
 end

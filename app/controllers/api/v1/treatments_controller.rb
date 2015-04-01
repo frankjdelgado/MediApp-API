@@ -8,7 +8,7 @@ module Api
 
 				treatments = current_user.treatments.page(params[:page])
 
-				render status: :created, json: treatments.to_json
+				render status: :ok, json: treatments.to_json
 			end
 
 			def show
